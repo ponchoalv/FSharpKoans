@@ -1,5 +1,6 @@
 ﻿namespace FSharpKoans
 open FSharpKoans.Core
+open System.Globalization
 
 //---------------------------------------------------------------
 // Apply Your Knowledge!
@@ -60,6 +61,21 @@ module ``about the stock example`` =
 
     [<Koan>]
     let YouGotTheAnswerCorrect() =
-        let result =  __
+
+        let getOpenClose (stockRow:string) =
+            let splited = stockRow.Split([|','|])
+            (splited.[0], System.Double.Parse(splited.[1]), System.Double.Parse(splited.[4]))
+
+        let getDiference(_,x,y) =
+            abs(y-x)
+
+        let getDate(date,_,_) = date
+
+        let result = stockData
+                    |> List.skip 1
+                    |> List.map getOpenClose
+                    |> List.maxBy getDiference
+                    |> getDate
+        
         
         AssertEquality "2012-03-13" result
